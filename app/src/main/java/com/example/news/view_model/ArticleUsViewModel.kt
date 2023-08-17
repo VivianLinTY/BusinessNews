@@ -6,15 +6,14 @@ import androidx.lifecycle.LiveData
 import com.example.news.repository.ArticleRepository
 import com.example.news.response.ArticleResponse
 
-class ArticleUsViewModel(application: Application) : AndroidViewModel(application) {
-    val dashboardNewsResponseLiveData: LiveData<ArticleResponse>
-    private val articleRepository: ArticleRepository = ArticleRepository()
+class ArticleUsViewModel(
+    application: Application,
+    private val articleRepository: ArticleRepository
+) : AndroidViewModel(application) {
+    val dashboardNewsResponseLiveData: LiveData<ArticleResponse> =
+        articleRepository.getDashBoardNews("us")
 
-    init {
-        dashboardNewsResponseLiveData = articleRepository.getDashBoardNews("us")
-    }
-
-    override fun onCleared() {
+    public override fun onCleared() {
         super.onCleared()
         articleRepository.cancelRequests()
     }

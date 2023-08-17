@@ -1,16 +1,17 @@
 package com.example.news.view
 
+import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.news.adapter.ArticleAdapter
 import com.example.news.databinding.FragmentSecondPageBinding
 import com.example.news.model.Article
+import com.example.news.repository.ArticleRepository
 import com.example.news.response.ArticleResponse
 import com.example.news.view_model.ArticleUsViewModel
 
@@ -44,14 +45,16 @@ class SecondPageFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        articleViewModel = ViewModelProvider(this).get(ArticleUsViewModel::class.java)
+        val application = context?.applicationContext as Application
+        articleViewModel = ArticleUsViewModel(application, ArticleRepository())
     }
 
     private fun getArticles() {
         articleViewModel!!.dashboardNewsResponseLiveData.observe(
             viewLifecycleOwner
         ) { articleResponse: ArticleResponse? ->
-            if (articleResponse?.getArticles() != null && articleResponse.getArticles()!!.isNotEmpty()
+            if (articleResponse?.getArticles() != null && articleResponse.getArticles()!!
+                    .isNotEmpty()
             ) {
                 binding.progressBar.visibility = View.GONE
                 val articleList = articleResponse.getArticles()
