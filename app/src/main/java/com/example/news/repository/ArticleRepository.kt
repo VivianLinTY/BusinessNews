@@ -20,7 +20,6 @@ class ArticleRepository {
     fun getDashBoardNews(country: String): LiveData<ArticleResponse> {
         val data: MutableLiveData<ArticleResponse> = MutableLiveData<ArticleResponse>()
         // Store the current Call instance
-        Log.d("ArticleRepository", "getDashBoardNews country =$country")
         currentCall = apiRequest.getTopHeadlines(country, "business", API_KEY)
         currentCall!!.enqueue(object : Callback<ArticleResponse?> {
             override fun onResponse(

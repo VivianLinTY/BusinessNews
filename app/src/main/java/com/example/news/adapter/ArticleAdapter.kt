@@ -1,6 +1,8 @@
 package com.example.news.adapter
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +15,7 @@ import com.example.news.model.Article
 
 class ArticleAdapter(private val context: Context, articleArrayList: ArrayList<Article>) :
     RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
-    var articleArrayList: ArrayList<Article>
+    private var articleArrayList: ArrayList<Article>
 
     init {
         this.articleArrayList = articleArrayList
@@ -27,7 +29,13 @@ class ArticleAdapter(private val context: Context, articleArrayList: ArrayList<A
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         val article: Article = articleArrayList[i]
-        viewHolder.tvTitle.setText(article.title)
+        viewHolder.itemView.setOnClickListener {
+            if (null != article.url) {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(article.url))
+                context.startActivity(intent)
+            }
+        }
+        viewHolder.tvTitle.text = article.title
         Glide.with(context)
             .load(article.urlToImage)
             .into(viewHolder.imgViewCover)
