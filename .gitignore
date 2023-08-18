@@ -9,3 +9,5 @@
 .cxx
 local.properties
 config.properties
+app/debug
+app/release
